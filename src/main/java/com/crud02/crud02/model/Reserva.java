@@ -32,7 +32,7 @@ public class Reserva {
     private Quarto quarto;
 
     @ManyToOne
-    @JoinColumn(name = "hospede_id")  // <- Adicione isso corretamente
+    @JoinColumn(name = "hospede_id")  
     private Hospede hospede;
 }
 

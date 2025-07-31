@@ -9,6 +9,6 @@ public interface QuartoRepository extends JpaRepository<Quarto, Long> {
     
 
 }
-    // Additional query methods can be defined here if needed
+   
    
 
