@@ -125,6 +125,22 @@ json
   "hospede": { "id": 1 }
 }
 ```
+### POST /api/v1/pagamentos
+* Método: POST * http://localhost:8080/api/v1/pagamentos
+
+```bash
+{
+  {
+  "valor": 750.00,
+  "dataPagamento": "2025-08-10",
+  "metodoPagamento": "CARTAO_CREDITO",
+  "reserva": { "id": 1 }
+  }
+}
+```
+*  O id da reserva deve ser o mesmo que foi retornado na criação de uma reserva. *
+
+
 ## Verificação no Terminal (PostgreSQL)
 
 ### Acesse o PostgreSQL:
