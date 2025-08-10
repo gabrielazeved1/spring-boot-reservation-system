@@ -1,13 +1,15 @@
 package com.crud02.crud02.controller;
 
-import com.crud02.crud02.model.Pagamento;
-import com.crud02.crud02.service.PagamentoService;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.crud02.crud02.model.Pagamento;
+import com.crud02.crud02.service.PagamentoService;
 
 @RestController
 @RequestMapping("/api/v1/pagamentos")
@@ -16,15 +18,47 @@ public class PagamentoController {
     @Autowired
     private PagamentoService pagamentoService;
 
+    // READ: Busca todos os pagamentos
     @GetMapping
     public ResponseEntity<List<Pagamento>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(pagamentoService.findAllPagamentos());
     }
 
+    // READ: Busca um pagamento pelo ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Pagamento> findById(@PathVariable Long id) {
+        Optional<Pagamento> pagamento = pagamentoService.findById(id);
+        return pagamento.map(value -> ResponseEntity.status(HttpStatus.OK).body(value))
+                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    // CREATE: Cria um novo pagamento
     @PostMapping
     public ResponseEntity<Pagamento> create(@RequestBody Pagamento pagamento) {
         return ResponseEntity.status(HttpStatus.CREATED).body(pagamentoService.save(pagamento));
     }
-    
-    // Você pode adicionar outros métodos como GET por ID, PUT e DELETE aqui
+
+    // UPDATE: Atualiza um pagamento pelo ID
+    @PutMapping("/{id}")
+    public ResponseEntity<Pagamento> update(@PathVariable Long id, @RequestBody Pagamento pagamento) {
+        Optional<Pagamento> existingPagamento = pagamentoService.findById(id);
+        if (existingPagamento.isPresent()) {
+            pagamento.setId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(pagamentoService.update(pagamento));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    // DELETE: Deleta um pagamento pelo ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        Optional<Pagamento> pagamento = pagamentoService.findById(id);
+        if (pagamento.isPresent()) {
+            pagamentoService.deleteById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
