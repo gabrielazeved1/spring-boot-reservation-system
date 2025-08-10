@@ -235,14 +235,13 @@ http://localhost:8080
 #### Deletar
 **DELETE** `/api/v1/pagamentos/{id}`
 
-## Demonstração da API
-Esta captura de tela demonstra a API em funcionamento, mostrando os dados no terminal do PostgreSQL e uma requisição GET bem-sucedida para a entidade Pagamento no Insomnia.
-
+---
 
 ## Demonstração da API
-Esta captura de tela demonstra a API em funcionamento, mostrando os dados no terminal do PostgreSQL e uma requisição GET bem-sucedida para a entidade Pagamento no Insomnia.
 
-[![Demonstração do CRUD no Insomnia e verificação no banco](assets/teste_crud.png)](assets/teste_crud.png)
+Todos os testes de CRUD foram realizados com sucesso. A captura de tela abaixo serve como confirmação, demonstrando a API em funcionamento e a integridade dos dados no terminal do PostgreSQL e no Insomnia.
+
+![Demonstração do CRUD no Insomnia](assets/teste_crud.png)
 
 ---
 
