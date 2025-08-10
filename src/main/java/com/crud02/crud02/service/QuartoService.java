@@ -11,6 +11,4 @@ public interface QuartoService {
     Optional<Quarto> findById(Long id);
     Quarto update(Quarto quarto);
     void deleteById(Long id);
-
-    
 }

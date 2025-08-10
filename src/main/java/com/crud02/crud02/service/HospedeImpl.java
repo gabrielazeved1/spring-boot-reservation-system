@@ -18,7 +18,6 @@ public class HospedeImpl implements HospedeService{
     @Override
     public Hospede save(Hospede hospede) {
         return hospedeRepository.save(hospede);
-
     }
 
     @Override

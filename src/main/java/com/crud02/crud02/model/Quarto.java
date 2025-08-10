@@ -3,6 +3,7 @@ package com.crud02.crud02.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,13 +22,14 @@ public class Quarto {
 
     @Column(name = "numero", length = 10, nullable = false)
     private Integer numero;
-    
+
     @Column(name = "tipo", length = 20)
     private String tipo;
 
     @Column(name = "preco", columnDefinition = "NUMERIC(10,2) DEFAULT 0.0")
     private Float preco;
 
+    @JsonManagedReference("quarto-reservas")
     @OneToMany(mappedBy = "quarto", cascade = CascadeType.ALL)
-    private List  <Reserva> reservas = new ArrayList<>()  ;
+    private List<Reserva> reservas = new ArrayList<>();
 }

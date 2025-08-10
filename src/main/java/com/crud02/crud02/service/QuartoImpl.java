@@ -15,38 +15,28 @@ public class QuartoImpl implements QuartoService {
     @Autowired
     private QuartoRepository quartoRepository;
 
-
+    @Override
     public Quarto save(Quarto quarto) {
         return quartoRepository.save(quarto);
-        
     }
 
     @Override
     public List<Quarto> findAllQuartos() {
         return quartoRepository.findAll();
-        
-        
     }
 
     @Override
     public Optional<Quarto> findById(Long id) {
         return quartoRepository.findById(id);
-       
-        
     }
 
     @Override
     public Quarto update(Quarto quarto) {
         return quartoRepository.save(quarto);
-        
-        
     }
 
     @Override
     public void deleteById(Long id) {
         quartoRepository.deleteById(id);
-        
-        
     }
-    
 }
