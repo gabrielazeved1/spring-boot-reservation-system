@@ -2,9 +2,7 @@ package com.crud02.crud02.model;
 
 import java.sql.Date;
 
-import org.hsqldb.lib.RCData;
-
-import jakarta.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,12 +25,13 @@ public class Reserva {
     @Temporal(TemporalType.DATE)
     private Date data_checkout;
 
+    @JsonBackReference("quarto-reservas")
     @ManyToOne
     @JoinColumn(name = "quarto_id")
     private Quarto quarto;
 
+    @JsonBackReference("hospede-reservas")
     @ManyToOne
-    @JoinColumn(name = "hospede_id")  
+    @JoinColumn(name = "hospede_id")
     private Hospede hospede;
 }
-
