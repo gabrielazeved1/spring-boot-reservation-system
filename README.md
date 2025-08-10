@@ -1,6 +1,6 @@
 # CRUD de Hospedagem - API REST com Spring Boot e PostgreSQL
 
-Este projeto é uma aplicação CRUD (Create, Read, Update, Delete) desenvolvida em Java utilizando o framework Spring Boot e integrada ao banco de dados PostgreSQL. A aplicação permite o gerenciamento de hóspedes, quartos e reservas em um sistema de hospedagem.
+Este projeto é uma aplicação CRUD (Create, Read, Update, Delete) desenvolvida em Java utilizando o framework Spring Boot e integrada ao banco de dados PostgreSQL. A aplicação permite o gerenciamento de hóspedes, quartos, reservas e pagamentos em um sistema de hospedagem.
 
 ## Sumário
 
@@ -9,6 +9,7 @@ Este projeto é uma aplicação CRUD (Create, Read, Update, Delete) desenvolvida
 - [Estrutura do Projeto (MVC)](#estrutura-do-projeto-mvc)
 - [Como Executar Localmente](#como-executar-localmente)
 - [Testes com Insomnia](#testes-com-insomnia)
+- [Correção de Problemas Comuns](#correção-de-problemas-comuns)
 - [Verificação no Terminal (PostgreSQL)](#verificação-no-terminal-postgresql)
 - [Explicação dos Códigos](#explicação-dos-códigos)
 - [Autor](#autor)
@@ -25,6 +26,7 @@ Este projeto é uma aplicação CRUD (Create, Read, Update, Delete) desenvolvida
 - Insomnia (para testes da API)
 - Lombok
 - HikariCP (pool de conexões)
+- Jackson (para serialização JSON)
 
 ---
 
@@ -36,6 +38,7 @@ Este projeto é uma aplicação CRUD (Create, Read, Update, Delete) desenvolvida
 - **PostgreSQL**: banco de dados relacional utilizado para persistência das entidades.
 - **HikariCP**: gerenciador de conexões de banco de dados com alta performance.
 - **Insomnia**: cliente REST utilizado para testar os endpoints da API.
+- **Jackson**: biblioteca padrão do Spring para serialização e desserialização de objetos JSON.
 
 ---
 
@@ -89,54 +92,149 @@ http://localhost:8080
 ```
 ## Testes com Insomnia
 
-### GET /api/v1/hospedes
-* Método GET * http://localhost:8080/api/v1/hospedes
+### Hospede (CRUD Completo)
 
-### POST /api/v1/hospedes
-*Método: POST*  http://localhost:8080/api/v1/hospedes
-Body (JSON):
-```bash 
+#### Criar
+**POST** `/api/v1/hospedes`  
+**JSON**
+```json
 {
   "nome": "Maria Silva",
   "email": "maria@email.com",
-  "telefone": "34999999999",
-  "status": "ATIVO"
+  "telefone": "34999999999"
 }
 ```
-### POST /api/v1/quartos
-* Método: GET * http://localhost:8080/api/v1/quartos
 
-```bash
-json
+#### Listar todos
+**GET** `/api/v1/hospedes`
 
+#### Buscar por ID
+**GET** `/api/v1/hospedes/{id}`
+
+#### Atualizar
+**PUT** `/api/v1/hospedes/{id}`  
+**JSON**
+```json
+{
+  "nome": "Maria Joaquina",
+  "email": "maria.joaquina@email.com"
+}
+```
+
+#### Deletar
+**DELETE** `/api/v1/hospedes/{id}`
+
+---
+
+### Quarto (CRUD Completo)
+
+#### Criar
+**POST** `/api/v1/quartos`  
+**JSON**
+```json
 {
   "numero": 101,
   "tipo": "Casal",
   "preco": 200.00
 }
 ```
-### POST /api/v1/reservas
-* Método: POST * http://localhost:8080/api/v1/reservas
 
-```bash
+#### Listar todos
+**GET** `/api/v1/quartos`
+
+#### Buscar por ID
+**GET** `/api/v1/quartos/{id}`
+
+#### Atualizar
+**PUT** `/api/v1/quartos/{id}`  
+**JSON**
+```json
 {
-  "data_checkout": "2025-08-10",
+  "numero": 101,
+  "tipo": "Deluxe",
+  "preco": 350.00
+}
+```
+
+#### Deletar
+**DELETE** `/api/v1/quartos/{id}`
+
+---
+
+### Reserva (CRUD Completo)
+
+> O id do hóspede e do quarto devem existir.
+
+#### Criar
+**POST** `/api/v1/reservas`  
+**JSON**
+```json
+{
+  "data_checkout": "2025-08-15",
   "quarto": { "id": 1 },
   "hospede": { "id": 1 }
 }
 ```
-### POST /api/v1/pagamentos
-* Método: POST * http://localhost:8080/api/v1/pagamentos
 
-```bash
-  {
+#### Listar todas
+**GET** `/api/v1/reservas`
+
+#### Buscar por ID
+**GET** `/api/v1/reservas/{id}`
+
+#### Atualizar
+**PUT** `/api/v1/reservas/{id}`  
+**JSON**
+```json
+{
+  "data_checkout": "2025-08-20",
+  "quarto": { "id": 1 },
+  "hospede": { "id": 1 }
+}
+```
+
+#### Deletar
+**DELETE** `/api/v1/reservas/{id}`
+
+---
+
+### Pagamento (CRUD Completo)
+
+> O id da reserva deve existir.
+
+#### Criar
+**POST** `/api/v1/pagamentos`  
+**JSON**
+```json
+{
   "valor": 750.00,
   "dataPagamento": "2025-08-10",
   "metodoPagamento": "CARTAO_CREDITO",
   "reserva": { "id": 1 }
-  }
+}
 ```
-*  O id da reserva deve ser o mesmo que foi retornado na criação de uma reserva. *
+
+#### Listar todos
+**GET** `/api/v1/pagamentos`
+
+#### Buscar por ID
+**GET** `/api/v1/pagamentos/{id}`
+
+#### Atualizar
+**PUT** `/api/v1/pagamentos/{id}`  
+**JSON**
+```json
+{
+  "valor": 750.00,
+  "dataPagamento": "2025-08-10",
+  "metodoPagamento": "PIX",
+  "reserva": { "id": 1 }
+}
+```
+
+#### Deletar
+**DELETE** `/api/v1/pagamentos/{id}`
+
 
 
 ## Verificação no Terminal (PostgreSQL)
@@ -172,28 +270,71 @@ SELECT * FROM reserva;
 ```
 
 ---
+## Correção de Problemas Comuns
 
+Durante o desenvolvimento, identifiquei e corrigi alguns erros importantes:
+
+### 1. Loop de Serialização Infinito
+
+Ao tentar realizar requisições **GET**, a API retornava um JSON em loop infinito.  
+Isso ocorria devido a um relacionamento bidirecional entre as entidades  
+(`Quarto -> Reserva -> Hospede -> Reserva`, etc.), que causava um **StackOverflowError**.
+
+**Solução:**  
+O problema foi resolvido usando as anotações do **Jackson** para controlar a serialização:
+
+- `@JsonManagedReference`: Usada no lado **"pai"** do relacionamento (ex.: na lista de reservas dentro da classe `Quarto`), para indicar que este é o lado que deve ser serializado.
+- `@JsonBackReference`: Usada no lado **"filho"** (ex.: no atributo `quarto` dentro da classe `Reserva`), para indicar que este lado deve ser ignorado durante a serialização, quebrando o loop.
+
+---
+
+### 2. Erro 415 "Unsupported Media Type"
+
+O servidor retornava este erro em requisições **POST** mesmo com um JSON válido.
+
+**Solução:**  
+O problema não estava no código, mas na forma como a requisição era enviada.  
+Era necessário garantir que o cabeçalho:
+
+```
+Content-Type: application/json
+```
+
+fosse incluído, o que foi resolvido configurando corretamente a ferramenta de testes (**Insomnia**) ou usando o comando **cURL**.
+
+
+---
 ## Explicação dos Códigos
 
 ### `model/`
+Contém as entidades **JPA**:
 
-Contém as entidades JPA:
+- **Hospede**: representa os hóspedes, com relação **1:N** com `Reserva`.
+- **Quarto**: representa os quartos disponíveis.
+- **Reserva**: representa a reserva de um quarto por um hóspede, com relacionamento `@ManyToOne` para ambos.
+- **Pagamento**: representa os pagamentos feitos para uma reserva.
 
-- `Hospede`: representa os hóspedes com relação 1:N com `Reserva`.
-- `Quarto`: representa os quartos disponíveis.
-- `Reserva`: representa a reserva de um quarto por um hóspede, com relacionamento `@ManyToOne` para ambos.
+---
 
 ### `repository/`
+Interfaces **JPA** que estendem `JpaRepository`, permitindo operações como:
 
-Interfaces JPA que estendem `JpaRepository`, permitindo operações como `findAll()`, `save()`, `deleteById()` sem precisar implementar nada manualmente.
+- `findAll()`
+- `save()`
+- `deleteById()`
+
+Tudo isso sem precisar implementar nada manualmente.
+
+---
 
 ### `service/`
+Contém as regras de negócio e faz a intermediação entre os **controllers** (camada web) e o acesso ao banco de dados.
 
-Contém as regras de negócio e intermediação entre os controllers (camada web) e o acesso ao banco de dados.
+---
 
 ### `controller/`
-
-Expõe os endpoints REST da aplicação via anotações como `@GetMapping` e `@PostMapping`, permitindo que clientes interajam com a API através de requisições HTTP.
+Expõe os **endpoints REST** da aplicação via anotações como `@GetMapping` e `@PostMapping`, permitindo que clientes interajam com a API através de requisições **HTTP**.
+---
 
 ### Autor: 
 * Gabriel Azevedo - Graduando em Engenharia de Computação * 
