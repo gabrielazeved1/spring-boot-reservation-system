@@ -333,7 +333,7 @@ Contém as regras de negócio e faz a intermediação entre os **controllers** (
 ---
 
 ### `controller/`
-Expõe os **endpoints REST** da aplicação via anotações como `@GetMapping` e `@PostMapping`, permitindo que clientes interajam com a API através de requisições **HTTP**.
+Expõe os *endpoints REST* da aplicação via anotações como `@GetMapping` e `@PostMapping`, permitindo que clientes interajam com a API através de requisições *HTTP*.
 ---
 
 ### Autor: 
