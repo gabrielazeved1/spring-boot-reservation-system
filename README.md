@@ -235,6 +235,17 @@ http://localhost:8080
 #### Deletar
 **DELETE** `/api/v1/pagamentos/{id}`
 
+## Demonstração da API
+Esta captura de tela demonstra a API em funcionamento, mostrando os dados no terminal do PostgreSQL e uma requisição GET bem-sucedida para a entidade Pagamento no Insomnia.
+
+
+## Demonstração da API
+Esta captura de tela demonstra a API em funcionamento, mostrando os dados no terminal do PostgreSQL e uma requisição GET bem-sucedida para a entidade Pagamento no Insomnia.
+
+[![Demonstração do CRUD no Insomnia e verificação no banco](assets/teste_crud.png)](assets/teste_crud.png)
+
+---
+
 
 
 ## Verificação no Terminal (PostgreSQL)
@@ -257,10 +268,21 @@ psql -h localhost -U postgres -d loja
 SELECT * FROM hospede;
 ```
 
+### Consultar quartos:
+
+```sql
+SELECT * FROM quartos;
+```
+
 ### Consultar reservas:
 
 ```sql
 SELECT * FROM reserva;
+```
+### Consultar pagamentos:
+
+```sql
+SELECT * FROM pagametos;
 ```
 
 ### Sair:
