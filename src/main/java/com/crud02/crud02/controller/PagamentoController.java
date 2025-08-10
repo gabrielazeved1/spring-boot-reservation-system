@@ -18,13 +18,13 @@ public class PagamentoController {
     @Autowired
     private PagamentoService pagamentoService;
 
-    // READ: Busca todos os pagamentos
+    // read -> busca todos os pagamentos
     @GetMapping
     public ResponseEntity<List<Pagamento>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(pagamentoService.findAllPagamentos());
     }
 
-    // READ: Busca um pagamento pelo ID
+    // read -> busca um pagamento pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<Pagamento> findById(@PathVariable Long id) {
         Optional<Pagamento> pagamento = pagamentoService.findById(id);
@@ -32,13 +32,13 @@ public class PagamentoController {
                         .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // CREATE: Cria um novo pagamento
+    // create -> cria um novo pagamento
     @PostMapping
     public ResponseEntity<Pagamento> create(@RequestBody Pagamento pagamento) {
         return ResponseEntity.status(HttpStatus.CREATED).body(pagamentoService.save(pagamento));
     }
 
-    // UPDATE: Atualiza um pagamento pelo ID
+    // update -> atualiza um pagamento pelo ID
     @PutMapping("/{id}")
     public ResponseEntity<Pagamento> update(@PathVariable Long id, @RequestBody Pagamento pagamento) {
         Optional<Pagamento> existingPagamento = pagamentoService.findById(id);
@@ -50,7 +50,7 @@ public class PagamentoController {
         }
     }
 
-    // DELETE: Deleta um pagamento pelo ID
+    // delete -> deleta um pagamento pelo ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Optional<Pagamento> pagamento = pagamentoService.findById(id);

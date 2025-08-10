@@ -18,13 +18,13 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    // READ: Busca todas as reservas
+    // read -> busca todas as reservas
     @GetMapping
     public ResponseEntity<List<Reserva>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(reservaService.findAllReservas());
     }
 
-    // READ: Busca uma reserva pelo ID
+    // read -> busca uma reserva pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<Reserva> findById(@PathVariable Long id) {
         Optional<Reserva> reserva = reservaService.findById(id);
@@ -32,13 +32,13 @@ public class ReservaController {
                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // CREATE: Cria uma nova reserva
+    // create -> cria uma nova reserva
     @PostMapping
     public ResponseEntity<Reserva> create(@RequestBody Reserva reserva) {
         return ResponseEntity.status(HttpStatus.CREATED).body(reservaService.save(reserva));
     }
 
-    // UPDATE: Atualiza uma reserva pelo ID
+    // update -> atualiza uma reserva pelo ID
     @PutMapping("/{id}")
     public ResponseEntity<Reserva> update(@PathVariable Long id, @RequestBody Reserva reserva) {
         Optional<Reserva> existingReserva = reservaService.findById(id);
@@ -50,7 +50,7 @@ public class ReservaController {
         }
     }
 
-    // DELETE: Deleta uma reserva pelo ID
+    // delete -> deleta uma reserva pelo ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Optional<Reserva> reserva = reservaService.findById(id);

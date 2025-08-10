@@ -18,13 +18,13 @@ public class QuartoController {
     @Autowired
     private QuartoService quartoService;
 
-    // READ: Busca todos os quartos
+    // read -> busca todos os quartos
     @GetMapping
     public ResponseEntity<List<Quarto>> findAll(){
         return ResponseEntity.status(HttpStatus.OK).body(quartoService.findAllQuartos());
     }
 
-    // READ: Busca um quarto pelo ID
+    // read -> busca um quarto pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<Quarto> findById(@PathVariable Long id) {
         Optional<Quarto> quarto = quartoService.findById(id);
@@ -32,13 +32,13 @@ public class QuartoController {
                      .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // CREATE: Cria um novo quarto
+    // create -> cria um novo quarto
     @PostMapping
     public ResponseEntity<Quarto> create(@RequestBody Quarto quarto){
         return ResponseEntity.status(HttpStatus.CREATED).body(quartoService.save(quarto));
     }
 
-    // UPDATE: Atualiza um quarto pelo ID
+    // update -> atualiza um quarto pelo ID
     @PutMapping("/{id}")
     public ResponseEntity<Quarto> update(@PathVariable Long id, @RequestBody Quarto quarto) {
         Optional<Quarto> existingQuarto = quartoService.findById(id);
@@ -50,7 +50,7 @@ public class QuartoController {
         }
     }
 
-    // DELETE: Deleta um quarto pelo ID
+    // delete -> deleta um quarto pelo ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Optional<Quarto> quarto = quartoService.findById(id);

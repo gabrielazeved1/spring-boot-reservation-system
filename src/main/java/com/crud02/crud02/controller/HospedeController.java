@@ -17,13 +17,13 @@ public class HospedeController {
     @Autowired
     private HospedeService hospedeService;
 
-    // READ: Busca todos os hóspedes
+    // read-> busca todos os hospedes
     @GetMapping
     public ResponseEntity<List<Hospede>> findAll(){
         return ResponseEntity.status(HttpStatus.OK).body(hospedeService.findAllHospedes());
     }
 
-    // READ: Busca um hóspede pelo ID
+    // read -> busca um hospede pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<Hospede> findById(@PathVariable Long id) {
         Optional<Hospede> hospede = hospedeService.findById(id);
@@ -34,13 +34,13 @@ public class HospedeController {
         }
     }
 
-    // CREATE: Cria um novo hóspede
+    // create -> cria um novo hspede
     @PostMapping
     public ResponseEntity<Hospede> create(@RequestBody Hospede hospede){
         return ResponseEntity.status(HttpStatus.CREATED).body(hospedeService.save(hospede));
     }
 
-    // UPDATE: Atualiza um hóspede pelo ID
+    // update -> atualiza um hospede pelo ID
     @PutMapping("/{id}")
     public ResponseEntity<Hospede> update(@PathVariable Long id, @RequestBody Hospede hospede) {
         Optional<Hospede> existingHospede = hospedeService.findById(id);
@@ -52,7 +52,7 @@ public class HospedeController {
         }
     }
 
-    // DELETE: Deleta um hóspede pelo ID
+    // delete -> deleta um hospede pelo ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Optional<Hospede> hospede = hospedeService.findById(id);
